@@ -1,7 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 
 public class Enemy : Fighter
 {
@@ -9,8 +6,10 @@ public class Enemy : Fighter
 
     public override void Initialize()
     {
-        _currentHealth = _maxHealth;
+        CurrentHealth = _maxHealth;
         _fighterHUD.SetHUD(enemyName, _maxHealth, _currentHealth);
+
+        OnHealthChanged += _fighterHUD.SetHP;
     }
 
     public override bool Attack(AttackBehaviours attackBehaviour, Fighter player)
@@ -21,10 +20,10 @@ public class Enemy : Fighter
 
         switch (attackBehaviour)
         {
-            case AttackBehaviours.defense:
-                _healthInDefense = _defenseBoost;
+            case AttackBehaviours.Heal:
+                CurrentHealth += _healthBoost;
                 break;
-            case AttackBehaviours.attack:
+            case AttackBehaviours.Attack:
                 player.TakeDamage(_attackPower);
                 break;
             default:
@@ -34,33 +33,16 @@ public class Enemy : Fighter
         return _isPlayerDead;
     }
 
-    public override void TakeDamage(int damage)
-    {
-        if (_healthInDefense > 0)
-        {
-            _healthInDefense -= damage;
-            if (_healthInDefense < 0)
-            {
-                _currentHealth += _healthInDefense;
-            }
-        }
-        else
-        {
-            _currentHealth -= damage;
-        }
-        _healthInDefense = 0;
-         _fighterHUD.SetHP(_currentHealth);
-        if (_currentHealth <= 0)
-            OnDie?.Invoke();
-    }
+    public override void TakeDamage(int damage) => CurrentHealth -= damage;
+
     public AttackBehaviours GetRandomAttackBehaviour()
     {
         System.Random rnd = new System.Random();
         int num = rnd.Next(0,2);
         if (num == 0)
-            return AttackBehaviours.defense;
+            return AttackBehaviours.Heal;
         else if (num == 1)
-            return AttackBehaviours.attack;
+            return AttackBehaviours.Attack;
         else
             return default;
 

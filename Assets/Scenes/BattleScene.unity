@@ -304,6 +304,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1272487534}
     m_Modifications:
     - target: {fileID: 612942185948170727, guid: c6f5289714956484185c98094fdf1d52, type: 3}
+      propertyPath: m_Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 612942185948170727, guid: c6f5289714956484185c98094fdf1d52, type: 3}
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 0}
@@ -387,9 +391,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2770924443580677930, guid: c6f5289714956484185c98094fdf1d52, type: 3}
+      propertyPath: m_FillAmount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2927113692036002156, guid: c6f5289714956484185c98094fdf1d52, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2927113692036002156, guid: c6f5289714956484185c98094fdf1d52, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2927113692036002156, guid: c6f5289714956484185c98094fdf1d52, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.4143066
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655227355858369376, guid: c6f5289714956484185c98094fdf1d52, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 6974707586788847374, guid: c6f5289714956484185c98094fdf1d52, type: 3}
       propertyPath: m_Name
@@ -1605,7 +1625,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fighterHUD: {fileID: 2757431774774231084}
-  _defenseBoost: 10
+  _healthBoost: 5
   _attackPower: 5
   _maxHealth: 50
   _strongAttackPower: 10
@@ -1773,7 +1793,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _fighterHUD: {fileID: 147695833}
-  _defenseBoost: 10
+  _healthBoost: 5
   _attackPower: 5
   _maxHealth: 50
   enemyName: Virusss
@@ -2331,9 +2351,25 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2770924443580677930, guid: c6f5289714956484185c98094fdf1d52, type: 3}
+      propertyPath: m_FillAmount
+      value: 0.323
+      objectReference: {fileID: 0}
+    - target: {fileID: 2927113692036002156, guid: c6f5289714956484185c98094fdf1d52, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2927113692036002156, guid: c6f5289714956484185c98094fdf1d52, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2927113692036002156, guid: c6f5289714956484185c98094fdf1d52, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -1.4143066
+      objectReference: {fileID: 0}
+    - target: {fileID: 6655227355858369376, guid: c6f5289714956484185c98094fdf1d52, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.000030517578
       objectReference: {fileID: 0}
     - target: {fileID: 6974707586788847374, guid: c6f5289714956484185c98094fdf1d52, type: 3}
       propertyPath: m_Name

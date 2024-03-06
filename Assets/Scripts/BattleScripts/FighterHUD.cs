@@ -16,7 +16,7 @@ public class FighterHUD : MonoBehaviour
         _healthSlider.value = currentHealth;
         _nameText.text = fighterName;
     }
-    public void SetHP(float hp)
+    public void SetHP(int hp)
     {
         _healthSlider.value = hp;
         if (hp > 0)
