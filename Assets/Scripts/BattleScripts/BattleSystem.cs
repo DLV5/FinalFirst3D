@@ -118,6 +118,8 @@ public class BattleSystem : MonoBehaviour
         if (_gameState == BattleState.Win)
         {
             _battleUI.ShowWinScreen();
+            PlayerStats.Money += 50;
+            PlayerStats.ExpiriencePoints += 5;
         }
         else if (_gameState == BattleState.Lost)
         {

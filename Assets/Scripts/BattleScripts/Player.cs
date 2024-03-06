@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Player : Fighter
 {
-    [Header("Additional battle parameters")]
-    [SerializeField] private int _strongAttackPower;
-
     public override void Initialize()
     {
+        _maxHealth = PlayerStats.MaxHealth;
+        _attackPower = PlayerStats.BaseAttackDamage;
+
         CurrentHealth = _maxHealth;
         _fighterHUD.SetHUD("You", _maxHealth, CurrentHealth);
 
@@ -28,7 +28,7 @@ public class Player : Fighter
                 enemy.TakeDamage(_attackPower);
                 break;
             case AttackBehaviours.StrongAttack:
-                enemy.TakeDamage(_strongAttackPower);
+                enemy.TakeDamage(_attackPower * 2);
                 break;
             default:
                 break;
