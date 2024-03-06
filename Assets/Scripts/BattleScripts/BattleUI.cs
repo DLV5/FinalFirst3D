@@ -11,7 +11,7 @@ using UnityEngine.UI;
 public class BattleUI : MonoBehaviour
 {
     public event Action OnBattleUISetUP;
-    public event Action OnDefenseClick;
+    public event Action OnHealClick;
     public event Action OnAttackClick;
     public event Action OnStrongAttackClick;
 
@@ -19,7 +19,7 @@ public class BattleUI : MonoBehaviour
 
     [Header("Player Turn UI")]
     [SerializeField] private GameObject _playerTurnUI;
-    [SerializeField] private Button _defenseButton;
+    [SerializeField] private Button _healButton;
     [SerializeField] private Button _attackButton;
     [SerializeField] private Button _strongAttackButton;
     [SerializeField] private int _strongAttackDelay;
@@ -47,7 +47,7 @@ public class BattleUI : MonoBehaviour
     {
         StartCoroutine(InitialCounter());
 
-        _defenseButton.onClick.AddListener(() => { OnDefenseClick?.Invoke(); _playerTurnUI.SetActive(false); });
+        _healButton.onClick.AddListener(() => { OnHealClick?.Invoke(); _playerTurnUI.SetActive(false); });
         _attackButton.onClick.AddListener(() => { OnAttackClick?.Invoke(); _playerTurnUI.SetActive(false); });
         _strongAttackButton.onClick.AddListener(() => {
             if (_strongAttackCounter > 0)

@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class BattleSystem : MonoBehaviour
@@ -28,7 +26,7 @@ public class BattleSystem : MonoBehaviour
         _battleUI.OnBattleUISetUP += StartBattle;
         _battleUI.StartCountUntilBattle();
 
-        _battleUI.OnDefenseClick += () => {
+        _battleUI.OnHealClick += () => {
             if (_gameState != BattleState.PlayerTurn)
                 return;
             StartCoroutine(PlayerAttack(AttackBehaviours.Heal));

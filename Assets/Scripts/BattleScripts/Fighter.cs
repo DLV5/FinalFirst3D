@@ -18,12 +18,17 @@ public abstract class Fighter: MonoBehaviour
     [SerializeField] protected private int _maxHealth;
     protected int _currentHealth;
 
+    public int MaxHealth { get => _maxHealth; private set => _maxHealth = value; }
+
     public int CurrentHealth
     {
         get => _currentHealth;
         set
         {
-            _currentHealth = value;
+            if(value <= MaxHealth)
+            {
+                _currentHealth = value;
+            }
 
             if (_currentHealth <= 0)
             {

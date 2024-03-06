@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class Player : Fighter
 {
+    [SerializeField] private Animator _animator;
+
     public override void Initialize()
     {
         _maxHealth = PlayerStats.MaxHealth;
@@ -23,11 +25,14 @@ public class Player : Fighter
         {
             case AttackBehaviours.Heal:
                 CurrentHealth += _healthBoost;
+                _animator.SetTrigger("Heal");
                 break;
             case AttackBehaviours.Attack:
                 enemy.TakeDamage(_attackPower);
+                _animator.SetTrigger("Attack");
                 break;
             case AttackBehaviours.StrongAttack:
+                _animator.SetTrigger("StrongAttack");
                 enemy.TakeDamage(_attackPower * 2);
                 break;
             default:
