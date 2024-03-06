@@ -2,27 +2,16 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-/// <summary>
-/// Defines the key behaviour of a fighter
-/// </summary>
+
 public class Player : Fighter
 {
-    [Header("Battle parameters")]
-    [SerializeField] private int _defenseBoost;
-    [SerializeField] private int _attackPower;
+    [Header("Additional battle parameters")]
     [SerializeField] private int _strongAttackPower;
 
-    private FighterHUD _fighterHUD;
-    private int _maxHealth;
-    private int _currentHealth;
-
-    private int _healthInDefense = 0;
-
-    public override void Initialize(FighterHUD fighterHUD, int maxHealth)
+    public override void Initialize()
     {
-        _fighterHUD = fighterHUD;
-        _maxHealth = maxHealth;
-        _currentHealth = maxHealth;
+        _currentHealth = _maxHealth;
+        _fighterHUD.SetHUD("You", _maxHealth, _currentHealth);
     }
     public override bool Attack(AttackBehaviours attackBehaviour, Fighter enemy)
     {
@@ -32,13 +21,13 @@ public class Player : Fighter
 
         switch (attackBehaviour)
         {
-            case AttackBehaviours.Defense:
-                _healthInDefense = _currentHealth + _defenseBoost;
+            case AttackBehaviours.defense:
+                _healthInDefense = _defenseBoost;
                 break;
-            case AttackBehaviours.Attack:
+            case AttackBehaviours.attack:
                 enemy.TakeDamage(_attackPower);
                 break;
-            case AttackBehaviours.StrongAttack:
+            case AttackBehaviours.strongAttack:
                 enemy.TakeDamage(_strongAttackPower);
                 break;
             default:
@@ -48,22 +37,27 @@ public class Player : Fighter
         return _isEnemyDead;
     }
 
-    public override void TakeDamage(int damage) { 
-        if(_healthInDefense > 0)
+    public override void TakeDamage(int damage) {
+        if (_healthInDefense > 0)
         {
             _healthInDefense -= damage;
-            _healthInDefense = 0;
+            if (_healthInDefense < 0)
+            {
+                _currentHealth += _healthInDefense;
+            }
         }
         else
         {
             _currentHealth -= damage;
-            _fighterHUD.SetHP(_currentHealth);
         }
+        _fighterHUD.SetHP(_currentHealth);
+        if (_currentHealth <= 0)
+            OnDie?.Invoke();
     }
 }
 public enum AttackBehaviours
 {
-    Defense,
-    Attack,
-    StrongAttack
+    defense,
+    attack,
+    strongAttack
 }

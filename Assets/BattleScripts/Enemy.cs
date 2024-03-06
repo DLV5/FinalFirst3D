@@ -6,21 +6,11 @@ using UnityEngine;
 public class Enemy : Fighter
 {
     public string enemyName;
-    [Header("Battle parameters")]
-    [SerializeField] private int _defenseBoost;
-    [SerializeField] private int _attackPower;
 
-    private FighterHUD _fighterHUD;
-    private int _maxHealth;
-    private int _currentHealth;
-
-    private int _healthInDefense = 0;
-
-    public override void Initialize(FighterHUD fighterHUD, int maxHealth)
+    public override void Initialize()
     {
-        _fighterHUD = fighterHUD;
-        _maxHealth = maxHealth;
-        _currentHealth = maxHealth;
+        _currentHealth = _maxHealth;
+        _fighterHUD.SetHUD(enemyName, _maxHealth, _currentHealth);
     }
 
     public override bool Attack(AttackBehaviours attackBehaviour, Fighter player)
@@ -31,16 +21,16 @@ public class Enemy : Fighter
 
         switch (attackBehaviour)
         {
-            case AttackBehaviours.Defense:
-                _healthInDefense = _currentHealth + _defenseBoost;
+            case AttackBehaviours.defense:
+                _healthInDefense = _defenseBoost;
                 break;
-            case AttackBehaviours.Attack:
+            case AttackBehaviours.attack:
                 player.TakeDamage(_attackPower);
                 break;
             default:
                 break;
         }
-        player.OnDie -= OnPlayerDie;
+        //player.OnDie -= OnPlayerDie;
         return _isPlayerDead;
     }
 
@@ -49,22 +39,28 @@ public class Enemy : Fighter
         if (_healthInDefense > 0)
         {
             _healthInDefense -= damage;
-            _healthInDefense = 0;
+            if (_healthInDefense < 0)
+            {
+                _currentHealth += _healthInDefense;
+            }
         }
         else
         {
             _currentHealth -= damage;
-            _fighterHUD.SetHP(_currentHealth);
         }
+        _healthInDefense = 0;
+         _fighterHUD.SetHP(_currentHealth);
+        if (_currentHealth <= 0)
+            OnDie?.Invoke();
     }
     public AttackBehaviours GetRandomAttackBehaviour()
     {
         System.Random rnd = new System.Random();
-        int num = rnd.Next(0,1);
+        int num = rnd.Next(0,2);
         if (num == 0)
-            return AttackBehaviours.Defense;
+            return AttackBehaviours.defense;
         else if (num == 1)
-            return AttackBehaviours.Attack;
+            return AttackBehaviours.attack;
         else
             return default;
 

@@ -18,13 +18,14 @@ public class BattleUI : MonoBehaviour
     [SerializeField] private TMP_Text _startText;
 
     [Header("Player Turn UI")]
-    [SerializeField] private GameObject _battleUI;
+    [SerializeField] private GameObject _playerTurnUI;
     [SerializeField] private Button _defenseButton;
     [SerializeField] private Button _attackButton;
     [SerializeField] private Button _strongAttackButton;
     [SerializeField] private int _strongAttackDelay;
 
     [Header("Enemy Turn UI")]
+    [SerializeField] private GameObject _enemyTurnUI;
     [SerializeField] private TMP_Text _enemyTurnText;
 
     [Header("Win Screen")]
@@ -35,39 +36,44 @@ public class BattleUI : MonoBehaviour
     private int _strongAttackCounter = 0;//Variable responsible for keeping Strong Attack Button deactevated for some time after it been pressed
 
     private WaitForSecondsRealtime realSecond = new WaitForSecondsRealtime(1f);
-    public void StartCountUntilBattle()
+    private void Start()
     {
+        _enemyTurnUI.SetActive(false);
+        _playerTurnUI.SetActive(false);
         _winScreen.SetActive(false);
         _deadScreen.SetActive(false);
+    }
+    public void StartCountUntilBattle()
+    {
         StartCoroutine(InitialCounter());
 
-        _defenseButton.onClick.AddListener(() => { OnDefenseClick?.Invoke(); _battleUI.SetActive(false); });
-        _attackButton.onClick.AddListener(() => { OnAttackClick?.Invoke(); _battleUI.SetActive(false); });
+        _defenseButton.onClick.AddListener(() => { OnDefenseClick?.Invoke(); _playerTurnUI.SetActive(false); });
+        _attackButton.onClick.AddListener(() => { OnAttackClick?.Invoke(); _playerTurnUI.SetActive(false); });
         _strongAttackButton.onClick.AddListener(() => {
-            if (!(_strongAttackCounter <= 0))
+            if (_strongAttackCounter > 0)
                 return;
             OnStrongAttackClick?.Invoke();
-            _battleUI.SetActive(false); 
+            _playerTurnUI.SetActive(false); 
             _strongAttackButton.interactable = false;
             _strongAttackCounter = _strongAttackDelay;
         });
     }
     public void PlayerTurn()
     {
-        _battleUI.SetActive(true);
-        if (_strongAttackCounter != 0)
+        _enemyTurnUI.SetActive(false);
+        _playerTurnUI.SetActive(true);
+        if (_strongAttackCounter > 0)
         {
             _strongAttackCounter--;
-            if(_strongAttackCounter < 0)
-            {
-                _strongAttackCounter = 0;
-            }
+            if (_strongAttackCounter == 0)
+                _strongAttackButton.interactable = true;
         }
     }
-    public void EnemyTurn(string enemyName)
+    public void EnemyTurn(string enemyName, string enemyAttackBehaviour)
     {
-        _battleUI.SetActive(false);
-        _enemyTurnText.text = enemyName + " is attacking.";
+        _playerTurnUI.SetActive(false);
+        _enemyTurnUI.SetActive(true);
+        _enemyTurnText.text = enemyName + " choosed " + enemyAttackBehaviour +"!";
     }
 
     public void ShowWinScreen()
@@ -82,18 +88,11 @@ public class BattleUI : MonoBehaviour
     {
         _startText.gameObject.SetActive(true);
         _startText.text = "Are you Ready?";
-        yield return new WaitForSecondsRealtime(2f);
-        _startText.text = "3";
-        yield return realSecond;
-        _startText.text = "2";
-        yield return realSecond;
-        _startText.text = "1";
         yield return realSecond;
         _startText.text = "GO!";
         yield return realSecond;
         _startText.gameObject.SetActive(false);
 
-        _battleUI.SetActive(true);
         OnBattleUISetUP?.Invoke();
     }
 }

@@ -27,40 +27,54 @@ public class BattleSystem : MonoBehaviour
         _battleUI.OnDefenseClick += () => {
             if (_gameState != BattleState.PlayerTurn)
                 return;
-            StartCoroutine(PlayerAttack(AttackBehaviours.Defense));
+            StartCoroutine(PlayerAttack(AttackBehaviours.defense));
         };
 
         _battleUI.OnAttackClick += () => {
             if (_gameState != BattleState.PlayerTurn)
                 return;
-            StartCoroutine(PlayerAttack(AttackBehaviours.Attack));
+            StartCoroutine(PlayerAttack(AttackBehaviours.attack));
         };
 
         _battleUI.OnStrongAttackClick += () => {
             if (_gameState != BattleState.PlayerTurn)
                 return;
-            StartCoroutine(PlayerAttack(AttackBehaviours.StrongAttack));
+            StartCoroutine(PlayerAttack(AttackBehaviours.strongAttack));
         };
+
+        //Initialization of fighters
+        _player.Initialize();
+        _enemy.Initialize();
     }
     private void StartBattle()
     {
         _gameState = BattleState.PlayerTurn;
+        _battleUI.OnBattleUISetUP -= StartBattle;
+        PlayerTurn();
     }
     private void PlayerTurn()
     {
-        _gameState = BattleState.PlayerTurn;
         _battleUI.PlayerTurn();
+        Debug.Log("PlayerTurn");
     }
     private void EnemyTurn()
     {
-        _gameState = BattleState.PlayerTurn;
-        _battleUI.EnemyTurn(_enemy.enemyName);
-    }
-    IEnumerator PlayerAttack(AttackBehaviours enemyAttackBehaviour)
+        AttackBehaviours choosedBehavior = _enemy.GetRandomAttackBehaviour();
+        _battleUI.EnemyTurn(_enemy.enemyName, choosedBehavior.ToString());
+        Debug.Log(choosedBehavior);
+        StartCoroutine(EnemyTurn(choosedBehavior));
+        Debug.Log("EnemyTurn");
+    } 
+    private void PowersComparison()
     {
-        bool isEnemyDead = _player.Attack(enemyAttackBehaviour, _enemy);
 
-        yield return new WaitForSeconds(2f);
+    }
+    IEnumerator PlayerAttack(AttackBehaviours playerAttackBehaviour)
+    {
+        bool isEnemyDead = _player.Attack(playerAttackBehaviour, _enemy);
+
+        //Place for animations
+        yield return null;
 
         if (isEnemyDead)
         {
@@ -70,16 +84,16 @@ public class BattleSystem : MonoBehaviour
         else
         {
             _gameState = BattleState.EnemyTurn;
-            StartCoroutine(EnemyTurn(_enemy.GetRandomAttackBehaviour()));
+            EnemyTurn();
         }
     }
     IEnumerator EnemyTurn(AttackBehaviours enemyAttackBehaviour)
     {
-        yield return new WaitForSeconds(1f);
 
-        bool isPlayerDead = _player.Attack(enemyAttackBehaviour, _enemy);
+        bool isPlayerDead = _enemy.Attack(enemyAttackBehaviour, _player);
 
         yield return new WaitForSeconds(1f);
+        //Place for animations
 
         if (isPlayerDead)
         {
